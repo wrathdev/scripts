@@ -1,0 +1,27 @@
+#!/usr/bin/bash
+
+build="${HOME}/storage/bin/builds"
+ofile="${1}.out"
+msg="Building"
+
+args="-std=c++14"
+
+printf "%-20s: %s\n" "${msg}" "$1"
+
+g++ ${args} ${1} -o $build/$ofile
+
+if [ $? -eq 0 ]
+then
+	printf "Build Sucessful\n"
+	chmod +x $build/$ofile
+	printf "Do you want to run it: "
+	read ch
+	if [ "${ch}" = "y" ]
+	then
+		$build/$ofile
+	fi
+
+
+else
+	printf "Build Unsucessful\n"
+fi

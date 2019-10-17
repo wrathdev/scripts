@@ -64,7 +64,10 @@ def req_logout(username, producttype=0):
 
 
 if __name__ == '__main__':
-    print(req_login("1616403218", "karzdar", '0'))
+    roll_no = input("Enetr the Username: ")
+    password = input("Enter the password: ")
+    print(req_login(roll_no, password))
+
 
 
     

@@ -17,28 +17,96 @@ DEBUG=false
 STD="c11"
 RUN=false
 
-build="${HOME}/storage/bin/builds"
-ofile="${1}.out"
-msg="Building"
+while [[ $# -gt 0 ]]
+do
+key="$1"
 
-args="-std=c++14"
+case $key in
+    -d|--debug)
+    DEBUG=true
+    shift # past argument
+    ;;
+    -s|--std)
+    STD="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    -c|--compiler)
+    COMPILER="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    -i|--input)
+    INPUT="$2"
+    INPUT=${INPUT//\\//}
+    shift # past argument
+    shift # past value
+    ;;
+    -o|--output)
+    OUTPUT="$2"
+    OUTPUT=${OUTPUT//\\//}
+    shift # past argument
+    shift # past value
+    ;;
 
-printf "%-20s: %s\n" "${msg}" "$1"
+    -I|--addpath)
+    INCL_PATH=$2
+    INCL_PATH=${INCL_PATH//\\//}
+    ARGS="-I ${INCL_PATH} ${ARGS}"
+    # while [[ "-" != "${INCL_PATH:0:1}" ||  ]]; do
+    #     INCLUDE_PATHS+=("${INCL_PATH}")
+    #     shift
+    #     INCL_PATH=$2
+    #     INCL_PATH=${INCL_PATH//\\//}
+    #     echo $INCL_PATH
+    # done
+    shift # past argument
+    shift # past value
+    ;;
 
-g++ ${args} ${1} -o $build/$ofile
+    -r|--run)
+    RUN=true
+    shift # past argument
+    ;;
+    *)    # unknown option
+    POSITIONAL+=("$1") # save it in an array for later
+    shift # past argument
+    ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
 
-if [ $? -eq 0 ]
-then
-	printf "Build Sucessful\n"
-	chmod +x $build/$ofile
-	printf "Do you want to run it: "
-	read ch
-	if [ "${ch}" = "y" ]
-	then
-		$build/$ofile
-	fi
+ARGS="${ARGS} -std=${STD} -o ${OUTPUT} $@ ${INPUT}"
 
-
-else
-	printf "Build Unsucessful\n"
+if [ "${DEBUG}" = true ] ; then
+    ARGS="-ggdb ${ARGS}"
 fi
+
+
+eval "printf '%.s=' {1..$SHELL_L}"                          #SEPARTORS
+echo "$ARGS"                                              #For Verbose
+printf "%-20s: %s\n" "${BUILD_MSG}" $(basename "${INPUT}")
+
+
+#Remove
+
+START=$(date +%s.%N)
+gcc ${ARGS}  
+ERR=$?
+END=$(date +%s.%N)
+ELAPSED=$(awk -v a="$END" -v b="$START" 'BEGIN { printf "%s", a-b }' </dev/null)
+
+
+if [ $ERR -eq 0 ]
+then
+    printf "%s [Time Taken : %ss]\n" "Build Sucessful -----> $(basename $OUTPUT)" "$ELAPSED"
+
+    if [ "${RUN}" = true ] ; then
+        printf "\nExecuting $(basename $OUTPUT)\n"
+        eval "printf '%.s-' {1..$SHELL_L}"                   #SEPARTORS
+
+        $OUTPUT
+    fi
+fi
+
+eval "printf '%.s=' {1..$SHELL_L}"                           #SEPARTORS

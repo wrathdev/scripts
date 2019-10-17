@@ -3,6 +3,9 @@ import requests
 
 
 def time_milli():
+    """
+    Return the from EPOCH in milli seconds
+    """
     return int(time.time() * 1000)
 
 
@@ -24,6 +27,9 @@ logout_url = "http://172.16.16.16:8090/logout.xml"
 
 
 def req_login(username, password, producttype=0):
+    """
+    Login into college wifi with current timestamp.
+    """
     payload = {
         'username': username,
         "password": password,
@@ -43,6 +49,9 @@ def login(username, password, producttype=0):
         pass
 
 def req_logout(username, producttype=0):
+     """
+    Logout into college wifi with current timestamp.
+    """
     payload = {
         'username': username,
         "a": time_milli(),

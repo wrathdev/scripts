@@ -1,4 +1,11 @@
 #!/usr/bin/bash
+#: Title        : Build C
+#: Date         : 07-12-2018
+#: Author       : 
+#: Version      : 0.1
+#: Description  : Personal script to build c source files
+#: NOTE         : Always pass file paths in colons
+
 
 build="${HOME}/storage/bin/builds"
 ofile="${1}.out"

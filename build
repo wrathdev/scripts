@@ -7,6 +7,16 @@
 #: NOTE         : Always pass file paths in colons
 
 
+UILD_MSG="Building"
+SHELL_L=$(tput cols)                                            #Terminal width
+
+
+POSITIONAL=()
+COMPILER="gcc"
+DEBUG=false
+STD="c11"
+RUN=false
+
 build="${HOME}/storage/bin/builds"
 ofile="${1}.out"
 msg="Building"

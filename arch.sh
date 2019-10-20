@@ -160,6 +160,7 @@ function setup_arch() {
 
     echo "${BOLD} [CHROOTING INTO /mnt] ${RESET}"
     if arch-chroot /mnt; then
+        echo
     else
         echo "${RED}FAILED${RESET}"
         return 2

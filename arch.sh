@@ -61,7 +61,7 @@ function setup_arch() {
     echo 
 
     # FIx the timeou error when connected to college internet.
-    fix_dwd_limit="sed '/\[options\]/a DisableDownloadTimeout' ${PACMAN_CONF} -i.backup"
+    fix_dwd_limit="sed /\[options\]/aDisableDownloadTimeout ${PACMAN_CONF} -i.backup"
     echo "Disabling Download Limit from pacman.(Fix for college wifi) ...... "
     if $fix_dwd_limit > /dev/null  ; then
         echo "${GREEN}OK${RESET}"

@@ -86,7 +86,7 @@ function setup_arch() {
     echo "${BOLD}[ Preparing FileSystem ] ${RESET}"
 
     echo "Opening CryptLVM Container :-"
-    if cryptsetup open /dev/sda5 ${CRYPTLVM}; then
+    if cryptsetup open ${PART_CRYPT} ${CRYPTLVM}; then
         echo "${GREEN}SUCESS${RESET}"
     else
         echo "${RED}FAILED${RESET}"

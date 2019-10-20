@@ -100,6 +100,7 @@ function setup_arch() {
         "mkfs.ext4 ${VG_ROOT}"
         "mkfs.ext4 ${VG_HOME}"
         "mkswap ${VG_SWAP}"
+        "mkfs.fat -F32 ${PART_EFI}"
     )
 
     for i in "${format_exec[@]}"    

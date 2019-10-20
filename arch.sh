@@ -217,24 +217,10 @@ function setup_arch() {
 
     dbus-uuidgen --ensure > /dev/null
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
 }
+
+setup_color
+setup_arch
 
 
 

@@ -68,6 +68,7 @@ function cmd_nostdout() {
 function cmd_abort_nostd(){
     for i in "$@"
     do
+        printf "${i} ... "
         if $i >/dev/null; then
             echo "${GREEN}OK${RESET}"
         else
@@ -83,6 +84,7 @@ function cmd()
 {
     for i in "$@"
     do
+        echo "${i} ... "
         if $i; then
             echo "${GREEN}OK${RESET}"
         else
@@ -94,6 +96,7 @@ function cmd()
 function cmd_abort(){
     for i in "$@"
     do
+        echo "${i} ... "
         if $i; then
             echo "${GREEN}OK${RESET}"
         else
@@ -240,6 +243,5 @@ function setup_arch() {
 
 setup_color
 setup_arch
-
 
 

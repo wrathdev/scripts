@@ -88,6 +88,7 @@ function cmd()
             echo "${GREEN}OK${RESET}"
         else
             echo "${RED}FAILED${RESET}"
+	    return 1
         fi
     done
 }

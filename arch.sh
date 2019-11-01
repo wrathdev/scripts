@@ -179,8 +179,8 @@ function setup_arch() {
     echo "Mounting Partitions :-"
     mount_exec=(
         "mount ${VG_ROOT} /mnt"
-        "mkdir  /mnt/home"
-        "mkdir  /mnt/efi"
+        "mkdir -p /mnt/home"
+        "mkdir -p /mnt/efi"
         "mount ${VG_HOME} /mnt/home"
         "mount ${PART_EFI} /mnt/efi"
     )

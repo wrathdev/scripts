@@ -1,6 +1,6 @@
 
-T_COLS = $(tput cols)
-T_ROWS = $(tput lines)
+T_COLS=$(tput cols)
+T_ROWS=$(tput lines)
 
 LANG=en_US.UTF-8
 FONT=ter-122n
@@ -116,15 +116,15 @@ function cmd_abort(){
 function setup_arch() {
 
     # Set Time Synchronisation
-    printf "Setting NetworkTime Syncronization .......... "
+    echo "Setting NetworkTime Syncronization .......... "
     cmd_nostdout "timedatectl set-ntp true" 
    
     echo 
 
     # FIx the timeou error when connected to college internet.
     fix_dwd_limit="sed /\[options\]/aDisableDownloadTimeout ${PACMAN_CONF} -i.backup"
-    printf "Disabling Download Limit from pacman.(Fix for college wifi) ...... "
-    cmd_nostdout $fix_dwd_limit
+    echo "Disabling Download Limit from pacman.(Fix for college wifi) ...... "
+    cmd_nostdout "$fix_dwd_limit"
 
     echo 
 

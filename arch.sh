@@ -113,9 +113,9 @@ function cmd_abort(){
 
 function exit_s(){
     echo "${RED} Exiting Script ${RESET}"
+    cmd_nostdout "umount -R /mnt"
     cmd_nostdout "vgchange -a n vg"
-    cmd_nostdout "cryptsetup close ${CRYPTLVM}"
-    cmd_nostdout "umount -R /mnt" 
+    cmd_nostdout "cryptsetup close ${CRYPTLVM}" 
     exit 1
 }
 

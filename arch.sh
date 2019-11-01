@@ -158,6 +158,9 @@ function setup_arch() {
         echo "${RED}Could'nt open Crypt container.${RESET}"
         exit_s
     fi
+    
+    echo "Activating LVM Containers"
+    cmd_nostdout "vgchange -ay vg"
 
     echo 
 

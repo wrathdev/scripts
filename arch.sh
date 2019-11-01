@@ -161,7 +161,10 @@ function setup_arch() {
     fi
     
     echo "Activating LVM Containers"
-    cmd_nostdout "vgchange -ay vg"
+    cmd_nostdout "vgchange -ay"
+    
+    #HOTFIX for a random bug where volume group does'nt show even though it is activated
+    lsblk &>/dev/null
 
     echo 
 

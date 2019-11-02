@@ -206,7 +206,7 @@ function setup_arch() {
                         networkmanager \
                         python python-requests \
                     "
-    if ! cmd_abort_nostd $pacstrap_exec; then
+    if ! cmd "$pacstrap_exec"; then
         echo "${RED}FAILED to install arch in /mnt.${RESET}"
         exit_s
     fi

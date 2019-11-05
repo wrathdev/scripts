@@ -1,0 +1,5 @@
+<?xml version='1.0' ?>
+<requestresponse>
+    <status><![CDATA[LOGIN]]></status>
+    <message><![CDATA[You&#39;ve signed out]]></message>
+</requestresponse>

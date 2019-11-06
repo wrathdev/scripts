@@ -109,7 +109,7 @@ def parseargs():
         description="Python Script to login to GGSIPU college network.")
     parser.add_argument(
         "username", type=str, help="Your username. Usually it is your 11 digit roll no.")
-    parser.add_argument("password", type=str, help="Pssaword to login with.")
+    parser.add_argument("password", type=str, help="Password to login with.")
     parser.add_argument("-v", "--verbose", action="store_true")
 
     return parser.parse_args()

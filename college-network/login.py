@@ -10,8 +10,8 @@ import re
 import time
 import argparse
 
-#Check for python version.
-#f-strings are introduced in 3.6.
+# Check for python version.
+# f-strings are introduced in 3.6.
 if not (sys.version_info.major >= 3 and sys.version_info.minor >= 6):
     print("ERROR: Script is only compatible with python 3.6 or higher")
     exit(-1)
@@ -27,8 +27,7 @@ except ModuleNotFoundError:
 headers = {
     "Host": "172.16.16.16:8090",
     "Connection": "keep-alive",
-    "Content-Length": "83",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.56 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.16 Safari/537.36",
     "Content-Type": "application/x-www-form-urlencoded",
     "Accept": "*/*",
     "Origin": "http://172.16.16.16:8090",
@@ -65,12 +64,7 @@ def scrap_xml_msg(xml: str) -> str:
 
 
 def req_login(username: str, password: str, producttype: int = 0) -> requests.Response:
-    payload = {
-        'username': username,
-        "a": time_milli(),
-        "mode": 191,
-        "producttype": producttype
-    }
+    payload = f"mode=191&username={username}&password={password}&a={time_milli()}&producttype=0"
     return requests.post(login_url, data=payload, headers=headers)
 
 

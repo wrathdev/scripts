@@ -99,6 +99,9 @@ def login(username: str, password: str):
                     print("ERROR: Unkown Error Occurred." + "\n" +
                           "ResponseXML:-" + "\n" + response_xml)
                 exit(5)
+        else:
+            print(
+                "ERROR: Cannot Connect to login portal. \nStatus-Code: " + resp.status_code)
 
 
 def parseargs():

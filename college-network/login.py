@@ -7,7 +7,8 @@ __license__ = "MIT"
 
 import sys
 import re
-import time
+from os import linesep
+from time import time, localtime, strftime
 import argparse
 
 # Check for python version.
@@ -48,10 +49,26 @@ xml_search_str = {
     "connection_problem": "Unable to access auth service"
 }
 
+LOG_PATH = None
 
 # Utilts
+
+
 def time_milli() -> int:
-    return int(time.time() * 1000)
+    return int(time() * 1000)
+
+
+def log(msg, type="INFO", stdout=True, file=None) -> None:
+    ctime = strftime("%a, %d %b %Y %H:%M:%S", localtime())
+    msg = f"{ctime}: [{type.upper()}] {msg} {linesep}"
+    if stdout:
+        print(msg, end="")
+    if file:
+        try:
+            with open(file, 'a+') as logf:
+                logf.write(msg)
+        except:
+            log(f"Cannot Write logs to file {file}.", "ERROR")
 
 
 def scrap_xml_msg(xml: str) -> str:
@@ -68,40 +85,40 @@ def req_login(username: str, password: str, producttype: int = 0) -> requests.Re
     return requests.post(login_url, data=payload, headers=headers)
 
 
-def login(username: str, password: str):
+def login(username: str, password: str, verbose: bool):
     try:
-        resp = req_login(username, password)
+        resp = req_login(username, password, verbose)
     except:
-        print("Error: Cannot connect to the login portal. Check network connection.")
-        print("Info: Your MAC might be blacklisted, so try changing that.")
+        log("Cannot connect to the login portal. Check network connection.", "error")
+        log("Your MAC might be blacklisted, so try changing that.", "info")
         exit(1)
     else:
         if resp.status_code == 200:
             response_xml = resp.text
             # Check for sucessful login
             if xml_search_str['sucess'] in response_xml:
-                print("SUCESS: Sign IN Sucessful.")
+                log("Sign IN Sucessful.", "success")
                 exit(0)
             elif xml_search_str['failed'] in response_xml:
-                print(f"ERROR: {xml_search_str['failed']}")
+                log(xml_search_str['failed'], "error")
                 exit(2)
             elif xml_search_str['max_limit'] in response_xml:
-                print(f"ERROR: {xml_search_str['max_limit']}")
+                log(xml_search_str['max_limit'], "error")
                 exit(3)
             elif xml_search_str['connection_problem'] in response_xml:
-                print(f"ERROR: {xml_search_str['connection_problem']}")
+                log(xml_search_str['connection_problem'], "error")
                 exit(4)
             else:
                 msg = scrap_xml_msg(response_xml)
                 if msg:
-                    print(f"ERROR: {msg}")
+                    log(msg, "error")
                 else:
-                    print("ERROR: Unkown Error Occurred." + "\n" +
-                          "ResponseXML:-" + "\n" + response_xml)
+                    log("ERROR: Unkown Error Occurred. ResponseXML:-" +
+                        linesep + response_xml, "error")
                 exit(5)
         else:
-            print(
-                "ERROR: Cannot Connect to login portal. \nStatus-Code: " + resp.status_code)
+            log("Cannot Connect to login portal. Status-Code: " +
+                resp.status_code, "error")
 
 
 def parseargs():
@@ -117,7 +134,7 @@ def parseargs():
 
 def main():
     args = parseargs()
-    login(args.username, args.password)
+    login(args.username, args.password, args.verbose)
 
 
 if __name__ == "__main__":

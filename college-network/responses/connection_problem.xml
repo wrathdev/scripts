@@ -1,0 +1,7 @@
+<?xml version='1.0' ?>
+<requestresponse>
+    <status><![CDATA[LOGIN]]></status>
+    <message><![CDATA[Unable to access auth service]]></message>
+    <logoutmessage><![CDATA[You have successfully logged off]]></logoutmessage>
+    <state><![CDATA[]]></state>
+</requestresponse>

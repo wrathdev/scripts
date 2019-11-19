@@ -1,6 +1,6 @@
 
-T_COLS = $(tput cols)
-T_ROWS = $(tput lines)
+T_COLS=$(tput cols)
+T_ROWS=$(tput lines)
 
 LANG=en_US.UTF-8
 FONT=ter-122n
@@ -84,11 +84,11 @@ function cmd()
 {
     for i in "$@"
     do
-        echo "${i} ... "
         if $i; then
             echo "${GREEN}OK${RESET}"
         else
             echo "${RED}FAILED${RESET}"
+	    return 1
         fi
     done
 }
@@ -96,7 +96,6 @@ function cmd()
 function cmd_abort(){
     for i in "$@"
     do
-        echo "${i} ... "
         if $i; then
             echo "${GREEN}OK${RESET}"
         else
@@ -113,31 +112,41 @@ function cmd_abort(){
 
 
 
+function exit_s(){
+    echo "${RED} Exiting Script ${RESET}"
+    cmd_nostdout "umount -R /mnt"
+    cmd_nostdout "vgchange -a n vg"
+    cmd_nostdout "cryptsetup close ${CRYPTLVM}" 
+    exit 1
+}
+
+
+
+
 function setup_arch() {
 
     # Set Time Synchronisation
-    printf "Setting NetworkTime Syncronization .......... "
+    echo "Setting NetworkTime Syncronization .......... "
     cmd_nostdout "timedatectl set-ntp true" 
    
     echo 
 
     # FIx the timeou error when connected to college internet.
     fix_dwd_limit="sed /\[options\]/aDisableDownloadTimeout ${PACMAN_CONF} -i.backup"
-    printf "Disabling Download Limit from pacman.(Fix for college wifi) ...... "
-    cmd_nostdout $fix_dwd_limit
+    echo "Disabling Download Limit from pacman.(Fix for college wifi) ...... "
+    cmd_nostdout "$fix_dwd_limit"
 
     echo 
 
 
 
     # Update Pacman Databse and FONT change
-    printf "${BLUE}Updating pacman databases ....... ${RESET}"
-    if cmd "yes | pacman -Sy terminus-font"  ; then
+    echo "${BLUE}Updating pacman databases ....... ${RESET}"
+    if cmd "pacman -Sy terminus-font"  ; then
         setfont $FONT
     else
-        echo "${RED}FAILED to UPDATE PACMAN database.${RESET}"
         echo "${YELLOW}Check Internet and Mirrors.${RESET}"
-        exit 1
+        exit_s 
     fi
 
     echo 
@@ -147,9 +156,15 @@ function setup_arch() {
     echo "Opening CryptLVM Container :-"
     
     if ! cmd "cryptsetup open ${PART_CRYPT} ${CRYPTLVM}"; then
-        echo "${RED}Could'nt open Crypt container. Exiting Script ${RESET}"
-        exit 2
+        echo "${RED}Could'nt open Crypt container.${RESET}"
+        exit_s
     fi
+    
+    echo "Activating LVM Containers"
+    cmd_nostdout "vgchange -ay"
+    
+    #HOTFIX for a random bug where volume group does'nt show even though it is activated
+    lsblk &>/dev/null
 
     echo 
 
@@ -167,15 +182,16 @@ function setup_arch() {
 
     echo "Mounting Partitions :-"
     mount_exec=(
-        "mount ${VG_ROOR} /mnt"
-        "mkdir  /mnt/home"
-        "mkdir  /mnt/efi"
+        "mount ${VG_ROOT} /mnt"
+        "mkdir -p /mnt/home"
+        "mkdir -p /mnt/efi"
         "mount ${VG_HOME} /mnt/home"
         "mount ${PART_EFI} /mnt/efi"
     )
 
     if ! cmd_abort_nostd "${mount_exec[@]}"; then
         echo "${RED}Failed to mount partitions. Exiting Script ${RESET}"
+        exit_s
     fi
 
     echo 
@@ -190,9 +206,9 @@ function setup_arch() {
                         networkmanager \
                         python python-requests \
                     "
-    if ! cmd_abort_nostd $pacstrap_exec; then
-        echo "${RED}FAILED to install arch in /mnt. Exiting Script.${RESET}"
-        exit 3
+    if ! cmd "$pacstrap_exec"; then
+        echo "${RED}FAILED to install arch in /mnt.${RESET}"
+        exit_s
     fi
 
 
@@ -201,7 +217,7 @@ function setup_arch() {
 
     echo "${BOLD} [CHROOTING INTO /mnt] ${RESET}"
     if ! cmd_abort "arch-chroot /mnt"; then
-        exit 2
+        exit_s
     fi
 
     echo "Setting console font ....."

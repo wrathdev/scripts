@@ -1,6 +1,5 @@
-builds/
 .vscode
-test.*.*
+test*.*
 *.exe
 *.tmp
 

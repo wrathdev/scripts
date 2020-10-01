@@ -215,45 +215,45 @@ function setup_arch() {
     echo 
     echo
 
-    echo "${BOLD} [CHROOTING INTO /mnt] ${RESET}"
-    if ! cmd_abort "arch-chroot /mnt"; then
-        exit_s
-    fi
+#     echo "${BOLD} [CHROOTING INTO /mnt] ${RESET}"
+#     if ! cmd_abort "arch-chroot /mnt"; then
+#         exit_s
+#     fi
 
-    echo "Setting console font ....."
-    cmd_abort_nostd "echo 'FONT=ter-122n' > /etc/vconsole.conf"
+#     echo "Setting console font ....."
+#     cmd_abort_nostd "echo 'FONT=ter-122n' > /etc/vconsole.conf"
 
-    echo
+#     echo
 
-    echo "Setting Time :-"
-    time_exec=(
-        "ln -sf /usr/share/zoneinfo/${ZONEINFO} /etc/localtime"
-        "mkdir  /mnt/home"
-    )
+#     echo "Setting Time :-"
+#     time_exec=(
+#         "ln -sf /usr/share/zoneinfo/${ZONEINFO} /etc/localtime"
+#         "mkdir  /mnt/home"
+#     )
 
-    cmd_nostdout "${time_exec[@]}"
+#     cmd_nostdout "${time_exec[@]}"
 
-    echo 
+#     echo 
 
-    echo "Setting Locale :-"
-    locale_exec=(
-        "echo "en_US.UTF-8 UTF-8" > /etc/locale.gen"
-        "locale-gen"
-        "echo "LANG=${LANG}" > /etc/locale.conf"
-        "export $LANG"
-    )
+#     echo "Setting Locale :-"
+#     locale_exec=(
+#         "echo "en_US.UTF-8 UTF-8" > /etc/locale.gen"
+#         "locale-gen"
+#         "echo "LANG=${LANG}" > /etc/locale.conf"
+#         "export $LANG"
+#     )
 
-    cmd_abort_nostd "${locale_exec[@]}"
+#     cmd_abort_nostd "${locale_exec[@]}"
 
-    echo 
+#     echo 
 
-    echo "Setting Hostname:-"
+#     echo "Setting Hostname:-"
 
-    cmd_abort_nostd "echo '${hostname}' > /etc/hostname"
-    cmd_abort_nostd "echo '127.0.0.1 localhost \\n::1 localhost \\n127.0.1.1 blusamurai.densetsu blusamurai' >> /etc/hosts"
+#     cmd_abort_nostd "echo '${hostname}' > /etc/hostname"
+#     cmd_abort_nostd "echo '127.0.0.1 localhost \\n::1 localhost \\n127.0.1.1 blusamurai.densetsu blusamurai' >> /etc/hosts"
  
 
-    cmd_abort_nostd "dbus-uuidgen --ensure"
+#     cmd_abort_nostd "dbus-uuidgen --ensure"
 
 }
 

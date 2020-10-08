@@ -1,3 +1,6 @@
-# scripts
-My scripts
-Collection of various scripts for installing linux and managing college network.
+# My Shell Scripts
+These are some of the scripts I once used.
+
+## List
+-build :- Simple wrapper script for gcc. Helps integrating automatic builds in vscode in windows with git bash
+- install:- install the arch installation

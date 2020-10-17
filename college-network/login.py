@@ -139,3 +139,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
+login_url = "http://172.16.16.16:8090/login.xml"
+# logout_url = "http://172.16.16.16:8090/logout.xml"
+login_url = "http://172.16.16.16:8090/login.xml"
+# logout_url = "http://172.16.16.16:8090/logout.xml"
+login_url = "http://172.16.16.16:8090/login.xml"
+# logout_url = "http://172.16.16.16:8090/logout.xml"

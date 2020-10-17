@@ -260,4 +260,9 @@ function setup_arch() {
 setup_color
 setup_arch
 
+LANG=en_US.UTF-8
+FONT=ter-122n
+LANG=en_US.UTF-8
+FONT=ter-122n
+
 

@@ -5,7 +5,10 @@
 #: Version      : 0.1
 #: Description  : Personal script to build c source files
 #: NOTE         : Always pass file paths in colons
-
+#: Description  : Personal script to build c source files
+#: NOTE         : Always pass file paths in colons
+#: Description  : Personal script to build c source files
+#: NOTE         : Always pass file paths in colons
 
 UILD_MSG="Building"
 SHELL_L=$(tput cols)                                            #Terminal width
@@ -110,3 +113,5 @@ then
 fi
 
 eval "printf '%.s=' {1..$SHELL_L}"                           #SEPARTORS
+#: Description  : Personal script to build c source files
+#: NOTE         : Always pass file paths in colons
